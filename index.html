@@ -39,13 +39,11 @@
             color: #f8fafc;
             user-select: none;
         }
-        /* Glassmorphism effects */
         .glass-panel {
             background: rgba(30, 41, 59, 0.75);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -57,17 +55,6 @@
             background: #334155;
             border-radius: 9999px;
         }
-        /* Confetti Canvas overlay */
-        #confettiCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        /* News Ticker Marquee */
         @keyframes marquee {
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
@@ -80,12 +67,8 @@
         .animate-marquee:hover {
             animation-play-state: paused;
         }
-        /* Card Sparkle animation */
-        @keyframes shine {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        .shiny-gold {
+    </style>
+</head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col">
 
   <!-- TOPBAR HEADER -->
@@ -103,9 +86,7 @@
         </div>
       </div>
 
-      <!-- Action & Status Controls -->
       <div class="flex items-center space-x-3 text-sm">
-        <!-- Floating Guide Button -->
         <button onclick="openGuideModal()" class="px-3.5 py-1.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border border-indigo-500/40 transition flex items-center gap-1.5 text-xs font-semibold shadow-sm">
           <span>❓</span> 初心者ガイド
         </button>
@@ -118,19 +99,29 @@
           <span id="timeLabel" class="text-slate-400 text-xs">経過:</span>
           <span id="timeCounter" class="font-bold text-emerald-400 text-sm">1 / 10 日目</span>
         </div>
-        <button id="nextStepBtn" onclick="advanceStep()" class="px-4 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-600/30 transition text-sm flex items-center gap-1">
+        <button id="nextStepBtn" onclick="advanceTurn()" class="px-4 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-600/30 transition text-sm flex items-center gap-1">
           <span>翌日へ進む ⏩</span>
         </button>
       </div>
     </div>
   </header>
 
-    <!-- Breaking News Marquee -->
+  <!-- News Ticker -->
+  <div class="bg-slate-950/80 border-b border-slate-800 px-4 py-2 flex items-center text-xs overflow-hidden">
+    <div class="bg-rose-600 text-white font-black px-2 py-0.5 rounded text-[10px] mr-3 shrink-0 flex items-center gap-1 animate-pulse">
+        <i class="fa-solid fa-bolt"></i> MARKET NEWS
+    </div>
+    <div class="overflow-hidden relative w-full">
+        <div id="newsTickerContent" class="animate-marquee font-medium">
+            東証マーケット開場中。各銘柄の最新ニュースと業績レポートに注目してください。
+        </div>
+    </div>
+  </div>
+
   <!-- TUTORIAL / STARTUP GUIDE MODAL -->
   <div id="guideModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 transition-opacity duration-300 opacity-100">
     <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       
-      <!-- Modal Header -->
       <div class="px-6 py-4 bg-slate-800/80 border-b border-slate-700/80 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="text-xl">🎓</span>
@@ -139,1532 +130,272 @@
         <button onclick="closeGuideModal()" class="text-slate-400 hover:text-white text-lg px-2 rounded-lg hover:bg-slate-700/50 transition">✕</button>
       </div>
 
-      <!-- Slide Body -->
       <div class="p-6 overflow-y-auto flex-1 text-slate-200">
-        
-        <!-- Slide 1: 投資の目的 -->
         <div id="guideSlide1" class="guide-slide flex flex-col items-center text-center space-y-4">
-          <div class="w-16 h-16 rounded-2xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-3xl shadow-inner text-blue-400">
-            📊
-          </div>
+          <div class="w-16 h-16 rounded-2xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-3xl shadow-inner text-blue-400">📊</div>
           <h3 class="text-xl font-bold text-blue-300">1. 株式投資の目的と仕組み</h3>
           <p class="text-sm text-slate-300 leading-relaxed max-w-lg">
             会社は成長のための資金を集めるために「株式」を発行します。<br>
-            社会のニュースや企業の決算発表によって株価は大きく変動します。ニュースをしっかり読み解き、適切な企業に投資して資産を増やしましょう！
+            ニュースをしっかり読み解き、適切な企業に投資して資産を増やしましょう！
           </p>
-          <div class="grid grid-cols-2 gap-3 w-full max-w-md pt-2 text-left">
-            <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-700/60 text-xs">
-              <span class="font-bold text-emerald-400 block mb-1">📈 良いニュース・好決算</span>
-              株を買いたい人が増えて株価が上昇！
-            </div>
-            <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-700/60 text-xs">
-              <span class="font-bold text-rose-400 block mb-1">📉 悪材料・不景気</span>
-              株を売りたい人が増えて株価が下落…
-            </div>
-          </div>
         </div>
-
-        <!-- Slide 2: 2つの投資モード -->
         <div id="guideSlide2" class="guide-slide hidden flex flex-col items-center text-center space-y-4">
-          <div class="w-16 h-16 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-3xl shadow-inner text-indigo-400">
-            ⏳
-          </div>
+          <div class="w-16 h-16 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-3xl shadow-inner text-indigo-400">⏳</div>
           <h3 class="text-xl font-bold text-indigo-300">2. 選べる2つの投資モード</h3>
           <p class="text-sm text-slate-300 leading-relaxed max-w-lg">
-            授業の目的や時間に合わせて2つのシミュレーションモードを選択できます。
+            「短期モード（10日間）」と「長期モード（52週間）」を体験できます。
           </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full pt-2 text-left">
-            <div class="p-4 bg-slate-900/80 rounded-xl border border-blue-500/30">
-              <div class="flex items-center justify-between mb-2">
-                <span class="font-bold text-blue-400">⚡ 短期投資モード</span>
-                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">10日間</span>
-              </div>
-              <p class="text-xs text-slate-400 leading-relaxed">
-                毎日のニュースによる株価の急変動をとらえ、スピーディな売買で利益を狙う短期トレード体験です。
-              </p>
-            </div>
-            <div class="p-4 bg-slate-900/80 rounded-xl border border-purple-500/30">
-              <div class="flex items-center justify-between mb-2">
-                <span class="font-bold text-purple-400">📅 長期投資モード</span>
-                <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">52週間 (1年)</span>
-              </div>
-              <p class="text-xs text-slate-400 leading-relaxed">
-                四半期ごとの決算発表や「配当金」の受取りを意識し、じっくり企業を育てる本格投資体験です。
-              </p>
-            </div>
-          </div>
         </div>
-
-        <!-- Slide 3: 優待カードとバッジ -->
-        <div id="guideSlide3" class="guide-slide hidden flex flex-col items-center text-center space-y-4">
-          <div class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-3xl shadow-inner text-amber-400">
-            🎁
-          </div>
-          <h3 class="text-xl font-bold text-amber-300">3. 株主優待カード & バッジ獲得</h3>
-          <p class="text-sm text-slate-300 leading-relaxed max-w-lg">
-            特定の株を一定数以上保有すると「株主優待カード」をGETできます！さらに成果に応じて称号バッジが開放されます。
-          </p>
-          <div class="flex items-center justify-center gap-4 py-2">
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-amber-500/40 text-center w-28">
-              <div class="text-xl">🥉</div>
-              <div class="text-xs font-bold text-amber-300 mt-1">100株保有</div>
-              <div class="text-[10px] text-slate-400">ブロンズ優待</div>
-            </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-300/40 text-center w-28">
-              <div class="text-xl">🥈</div>
-              <div class="text-xs font-bold text-slate-200 mt-1">500株保有</div>
-              <div class="text-[10px] text-slate-400">シルバー優待</div>
-            </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-yellow-400/50 text-center w-28">
-              <div class="text-xl">🥇</div>
-              <div class="text-xs font-bold text-yellow-400 mt-1">1000株保有</div>
-              <div class="text-[10px] text-slate-400">ゴールド優待</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 4: 勝ち筋のコツ -->
-        <div id="guideSlide4" class="guide-slide hidden flex flex-col items-center text-center space-y-4">
-          <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-3xl shadow-inner text-emerald-400">
-            💡
-          </div>
-          <h3 class="text-xl font-bold text-emerald-300">4. 勝利への攻略アドバイス</h3>
-          <ul class="text-xs text-left text-slate-300 space-y-2.5 max-w-md w-full bg-slate-900/60 p-4 rounded-xl border border-slate-700/60">
-            <li class="flex items-start gap-2">
-              <span class="text-emerald-400 font-bold">✔</span>
-              <span><strong>分散投資を心がけよう:</strong> 1つの会社だけに全額投じるのは危険！異なる業種の株に分けましょう。</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="text-emerald-400 font-bold">✔</span>
-              <span><strong>AIアナリスト「株タロー」を活用:</strong> 困ったら株タローのアドバイスボタンを押してみましょう。</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="text-emerald-400 font-bold">✔</span>
-              <span><strong>ニュースを先読み:</strong> 社会の動き（IT需要増、景気変化など）に敏感になろう！</span>
-            </li>
-          </ul>
-        </div>
-
       </div>
 
-      <!-- Modal Footer Nav -->
       <div class="px-6 py-4 bg-slate-900/80 border-t border-slate-700/80 flex items-center justify-between">
-        <!-- Step Indicators -->
-        <div class="flex items-center space-x-2" id="guideDots">
-          <span class="w-3 h-3 rounded-full bg-blue-500 transition-all"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-slate-600 transition-all"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-slate-600 transition-all"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-slate-600 transition-all"></span>
-        </div>
-
-        <!-- Buttons -->
-        <div class="flex items-center space-x-3">
-          <button id="guidePrevBtn" onclick="changeGuideSlide(-1)" class="px-3.5 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs font-semibold transition disabled:opacity-40" disabled>
-            ◀ 前へ
-          </button>
-          <button id="guideNextBtn" onclick="changeGuideSlide(1)" class="px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md shadow-blue-600/30 transition">
-            次へ ▶
-          </button>
-          <button id="guideStartBtn" onclick="closeGuideModal()" class="hidden px-5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white text-xs font-bold shadow-lg shadow-emerald-500/30 transition animate-pulse">
-            ゲームを始める！ 🚀
-          </button>
-        </div>
+        <button onclick="closeGuideModal()" class="px-5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-bold shadow-lg shadow-emerald-500/30">
+          ゲームを始める！ 🚀
+        </button>
       </div>
-
     </div>
   </div>
 
-  <!-- JavaScript for Guide Modal -->
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-5">
+      
+      <!-- Left Side -->
+      <section class="lg:col-span-8 flex flex-col gap-5">
+
+          <!-- Asset Overview Banner -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="glass-panel p-4 rounded-2xl flex flex-col justify-between">
+                  <div class="text-xs text-slate-400 font-medium">総資産額 (Valuation)</div>
+                  <div id="totalAssetsDisplay" class="text-2xl font-black text-amber-400 my-1">¥1,000,000</div>
+                  <div class="flex items-center text-xs font-bold gap-1" id="totalReturnDiff">
+                      <span>前日比: ±¥0 (0.00%)</span>
+                  </div>
+              </div>
+
+              <div class="glass-panel p-4 rounded-2xl flex flex-col justify-between">
+                  <div class="text-xs text-slate-400 font-medium">利用可能現金 (Cash)</div>
+                  <div id="cashDisplay" class="text-xl font-bold text-emerald-400 my-1">¥1,000,000</div>
+                  <div class="text-[11px] text-slate-400" id="portfolioWeightText">株式比率: 0.0%</div>
+              </div>
+
+              <div class="glass-panel p-4 rounded-2xl flex items-center gap-3">
+                  <div class="text-xs space-y-1">
+                      <div class="font-bold text-slate-300">ポートフォリオ内訳</div>
+                      <div class="flex items-center gap-1.5 text-slate-300"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> 現金: <span id="pieCashPct">100%</span></div>
+                      <div class="flex items-center gap-1.5 text-slate-300"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 inline-block"></span> 株式: <span id="pieStockPct">0%</span></div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Main Trading Card -->
+          <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
+              
+              <!-- Stock Selector Tabs -->
+              <div class="flex items-center gap-2 overflow-x-auto pb-2" id="stockTabsContainer"></div>
+
+              <!-- Selected Stock Header -->
+              <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                  <div>
+                      <div class="flex items-center gap-2">
+                          <span id="activeCompanySector" class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs px-2 py-0.5 rounded font-semibold">技術</span>
+                          <h2 id="activeCompanyName" class="text-xl font-black text-white">青葉テクノ</h2>
+                      </div>
+                      <p id="activeCompanyDesc" class="text-xs text-slate-400 mt-0.5">次世代AI半導体とロボティクス技術を開発する先進IT企業。</p>
+                  </div>
+
+                  <div class="flex items-center gap-4">
+                      <div class="text-right">
+                          <div class="text-xs text-slate-400">現在株価</div>
+                          <div id="activeStockPrice" class="text-2xl font-black text-amber-400">¥2,500</div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Order Panel -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                  <!-- Buy -->
+                  <div class="space-y-3">
+                      <div class="flex justify-between items-center text-xs font-bold text-slate-300">
+                          <span class="text-emerald-400">株式買い注文</span>
+                          <span>保有数: <strong id="userOwnedSharesDisplay" class="text-amber-400">0株</strong></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                          <input type="number" id="buyQtyInput" min="100" step="100" value="100" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                          <span class="text-xs text-slate-400">株</span>
+                      </div>
+                      <button onclick="executeTrade('buy')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-lg font-black text-sm shadow-lg transition">
+                          買い発注 (100株単位)
+                      </button>
+                  </div>
+
+                  <!-- Sell -->
+                  <div class="space-y-3">
+                      <div class="flex justify-between items-center text-xs font-bold text-slate-300">
+                          <span class="text-rose-400">株式売り注文</span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                          <input type="number" id="sellQtyInput" min="100" step="100" value="100" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                          <span class="text-xs text-slate-400">株</span>
+                      </div>
+                      <button onclick="executeTrade('sell')" class="w-full bg-rose-600 hover:bg-rose-500 text-white py-2.5 rounded-lg font-black text-sm shadow-lg transition">
+                          売り発注
+                      </button>
+                  </div>
+              </div>
+
+              <!-- Next Turn Controller -->
+              <div class="flex items-center justify-between gap-4 pt-2">
+                  <button onclick="advanceTurn()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-6 py-3 rounded-xl text-base shadow-xl transition">
+                      翌日に進む ⏩
+                  </button>
+              </div>
+          </div>
+      </section>
+
+      <!-- Right Side -->
+      <section class="lg:col-span-4 flex flex-col gap-5">
+          <div class="glass-panel rounded-2xl p-4 border-l-4 border-l-amber-500">
+              <div class="flex items-start gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-indigo-600 flex items-center justify-center text-slate-950 font-black text-lg">🤖</div>
+                  <div>
+                      <h3 class="font-black text-sm text-white">AIアナリスト「株タロー」</h3>
+                      <p id="aiAdvisorMessage" class="text-xs text-slate-300 mt-1.5 leading-relaxed bg-slate-900/70 p-2.5 rounded-lg border border-slate-800">
+                          「ニュースをよく見ながら、色々な会社の株を少しずつ買ってみよう！」
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </section>
+  </main>
+
+  <!-- JavaScript Program Implementation -->
   <script>
-    let currentGuideSlide = 1;
-    const totalGuideSlides = 4;
+    // 株式データ初期化
+    const stocks = [
+      { id: 'aoba', name: '青葉テクノ', sector: 'IT・技術', price: 2500, desc: '次世代AI半導体とロボティクス技術を開発する先進IT企業。' },
+      { id: 'sakura', name: 'サクラフード', sector: '食品・外食', price: 1200, desc: '全国展開する人気ファミリーレストランと食品製造チェーン。' },
+      { id: 'mirai', name: '未来エナジー', sector: '電力・エネルギー', price: 1800, desc: '再生可能エネルギーと水素発電に特化したクリーン電力会社。' },
+      { id: 'yamato', name: '大和運輸', sector: '物流・インフラ', price: 3100, desc: 'グローバル物流とドローン配送ネットワーク網を持つ大手。' }
+    ];
+
+    let currentDay = 1;
+    let cash = 1000000;
+    let holdings = { aoba: 0, sakura: 0, mirai: 0, yamato: 0 };
+    let selectedStockId = 'aoba';
 
     function openGuideModal() {
-      const modal = document.getElementById('guideModal');
-      modal.classList.remove('hidden');
-      setTimeout(() => modal.classList.remove('opacity-0'), 10);
-      showGuideSlide(1);
+      document.getElementById('guideModal').classList.remove('hidden');
     }
 
     function closeGuideModal() {
-      const modal = document.getElementById('guideModal');
-      modal.classList.add('opacity-0');
-      setTimeout(() => modal.classList.add('hidden'), 300);
+      document.getElementById('guideModal').classList.add('hidden');
     }
 
-    function changeGuideSlide(direction) {
-      const target = currentGuideSlide + direction;
-      if (target >= 1 && target <= totalGuideSlides) {
-        showGuideSlide(target);
+    function renderStockTabs() {
+      const container = document.getElementById('stockTabsContainer');
+      container.innerHTML = '';
+      stocks.forEach(s => {
+        const btn = document.createElement('button');
+        btn.className = `px-3 py-1.5 rounded-lg text-xs font-bold transition shrink-0 ${s.id === selectedStockId ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`;
+        btn.innerText = `${s.name} (¥${s.price})`;
+        btn.onclick = () => selectStock(s.id);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectStock(id) {
+      selectedStockId = id;
+      const stock = stocks.find(s => s.id === id);
+      document.getElementById('activeCompanyName').innerText = stock.name;
+      document.getElementById('activeCompanySector').innerText = stock.sector;
+      document.getElementById('activeCompanyDesc').innerText = stock.desc;
+      document.getElementById('activeStockPrice').innerText = `¥${stock.price.toLocaleString()}`;
+      document.getElementById('userOwnedSharesDisplay').innerText = `${holdings[id]}株`;
+      renderStockTabs();
+    }
+
+    function updateUI() {
+      let stockValue = 0;
+      stocks.forEach(s => {
+        stockValue += holdings[s.id] * s.price;
+      });
+      const totalAssets = cash + stockValue;
+
+      document.getElementById('totalAssetsDisplay').innerText = `¥${totalAssets.toLocaleString()}`;
+      document.getElementById('cashDisplay').innerText = `¥${cash.toLocaleString()}`;
+      document.getElementById('timeCounter').innerText = `${currentDay} / 10 日目`;
+
+      const stockPct = Math.round((stockValue / totalAssets) * 100);
+      document.getElementById('pieCashPct').innerText = `${100 - stockPct}%`;
+      document.getElementById('pieStockPct').innerText = `${stockPct}%`;
+      document.getElementById('userOwnedSharesDisplay').innerText = `${holdings[selectedStockId]}株`;
+      
+      renderStockTabs();
+    }
+
+    function executeTrade(type) {
+      const stock = stocks.find(s => s.id === selectedStockId);
+      const inputId = type === 'buy' ? 'buyQtyInput' : 'sellQtyInput';
+      const qty = parseInt(document.getElementById(inputId).value) || 0;
+
+      if (qty <= 0 || qty % 100 !== 0) {
+        alert('100株単位で入力してください。');
+        return;
       }
-    }
 
-    function showGuideSlide(slideIndex) {
-      currentGuideSlide = slideIndex;
-      for (let i = 1; i <= totalGuideSlides; i++) {
-        const slide = document.getElementById(`guideSlide${i}`);
-        if (slide) {
-          if (i === slideIndex) {
-            slide.classList.remove('hidden');
-          } else {
-            slide.classList.add('hidden');
-          }
+      const totalCost = stock.price * qty;
+
+      if (type === 'buy') {
+        if (cash < totalCost) {
+          alert('現金が不足しています！');
+          return;
         }
-      }
-
-      // Update Navigation Buttons
-      const prevBtn = document.getElementById('guidePrevBtn');
-      const nextBtn = document.getElementById('guideNextBtn');
-      const startBtn = document.getElementById('guideStartBtn');
-
-      if (prevBtn) prevBtn.disabled = (slideIndex === 1);
-
-      if (slideIndex === totalGuideSlides) {
-        if (nextBtn) nextBtn.classList.add('hidden');
-        if (startBtn) startBtn.classList.remove('hidden');
+        cash -= totalCost;
+        holdings[selectedStockId] += qty;
+        alert(`${stock.name}を ${qty}株 買い付けました！`);
       } else {
-        if (nextBtn) nextBtn.classList.remove('hidden');
-        if (startBtn) startBtn.classList.add('hidden');
+        if (holdings[selectedStockId] < qty) {
+          alert('売却できる株数が足りません！');
+          return;
+        }
+        cash += totalCost;
+        holdings[selectedStockId] -= qty;
+        alert(`${stock.name}を ${qty}株 売却しました！`);
       }
 
-      // Update Dots
-      const dotsContainer = document.getElementById('guideDots');
-      if (dotsContainer) {
-        const dots = dotsContainer.children;
-        for (let i = 0; i < dots.length; i++) {
-          if (i === slideIndex - 1) {
-            dots[i].className = 'w-3 h-3 rounded-full bg-blue-500 transition-all';
-          } else {
-            dots[i].className = 'w-2.5 h-2.5 rounded-full bg-slate-600 transition-all';
-          }
-        }
-      }
+      updateUI();
     }
 
-    // Show guide modal on page initial load
-    window.addEventListener('DOMContentLoaded', () => {
-      openGuideModal();
-    });
+    function advanceTurn() {
+      if (currentDay >= 10) {
+        alert('シミュレーション（10日間）が終了しました！お疲れ様でした！');
+        return;
+      }
+
+      currentDay++;
+      // 株価をランダムに変動
+      stocks.forEach(s => {
+        const changeRate = (Math.random() * 0.1) - 0.048; // -4.8% 〜 +5.2%
+        s.price = Math.max(100, Math.round(s.price * (1 + changeRate)));
+      });
+
+      const newsList = [
+        "青葉テクノが新AIチップを発表！株価に影響か。",
+        "サクラフード、新メニューが大ヒットで好調！",
+        "未来エナジー、新型バッテリーの開発に成功！",
+        "大和運輸、自動配送ロボットの実証実験を開始！"
+      ];
+      document.getElementById('newsTickerContent').innerText = newsList[Math.floor(Math.random() * newsList.length)];
+
+      selectStock(selectedStockId);
+      updateUI();
+    }
+
+    // 初期起動
+    window.onload = () => {
+      selectStock('aoba');
+      updateUI();
+    };
   </script>
-
-        <div class="bg-rose-600 text-white font-black px-2 py-0.5 rounded text-[10px] mr-3 shrink-0 flex items-center gap-1 animate-pulse">
-            <i class="fa-solid fa-bolt"></i> MARKET NEWS
-        </div>
-        <div class="overflow-hidden relative w-full">
-            <div id="newsTickerContent" class="animate-marquee font-medium">
-                東証マーケット開場中。各銘柄の最新ニュースと業績レポートに注目してください。
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-5">
-        
-        <!-- Left Side: Dashboard & Company Trading (8 Cols) -->
-        <section class="lg:col-span-8 flex flex-col gap-5">
-
-            <!-- Asset & Portfolio Overview Banner -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <div class="glass-panel p-4 rounded-2xl flex flex-col justify-between relative overflow-hidden">
-                    <div class="text-xs text-slate-400 font-medium">総資産額 (Valuation)</div>
-                    <div id="totalAssetsDisplay" class="text-2xl font-black text-amber-400 my-1">¥1,000,000</div>
-                    <div class="flex items-center text-xs font-bold gap-1" id="totalReturnDiff">
-                        <span>前日比: ±¥0 (0.00%)</span>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-4 rounded-2xl flex flex-col justify-between">
-                    <div class="text-xs text-slate-400 font-medium">利用可能現金 (Cash)</div>
-                    <div id="cashDisplay" class="text-xl font-bold text-emerald-400 my-1">¥1,000,000</div>
-                    <div class="text-[11px] text-slate-400" id="portfolioWeightText">株式比率: 0.0%</div>
-                </div>
-
-                <div class="glass-panel p-4 rounded-2xl flex items-center gap-3">
-                    <div class="w-16 h-16 relative shrink-0">
-                        <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90">
-                            <path class="text-slate-800" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            <path id="svgPieCash" class="text-emerald-500" stroke-width="4" stroke-dasharray="100, 100" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            <path id="svgPieStocks" class="text-indigo-500" stroke-width="4" stroke-dasharray="0, 100" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                        </svg>
-                    </div>
-                    <div class="text-xs space-y-1">
-                        <div class="font-bold text-slate-300">ポートフォリオ内訳</div>
-                        <div class="flex items-center gap-1.5 text-slate-300"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> 現金: <span id="pieCashPct">100%</span></div>
-                        <div class="flex items-center gap-1.5 text-slate-300"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 inline-block"></span> 株式: <span id="pieStockPct">0%</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Stock Trading Card -->
-            <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
-                
-                <!-- Stock Selector Tabs -->
-                <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="stockTabsContainer">
-                    <!-- Dynamic stock tabs inserted by JS -->
-                </div>
-
-                <!-- Selected Stock Header & Chart Header -->
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span id="activeCompanySector" class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs px-2 py-0.5 rounded font-semibold">技術</span>
-                            <h2 id="activeCompanyName" class="text-xl font-black text-white">青葉テクノ</h2>
-                        </div>
-                        <p id="activeCompanyDesc" class="text-xs text-slate-400 mt-0.5">次世代AI半導体とロボティクス技術を開発する先進IT企業。</p>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <div class="text-right">
-                            <div class="text-xs text-slate-400">現在株価</div>
-                            <div id="activeStockPrice" class="text-2xl font-black text-amber-400">¥2,500</div>
-                        </div>
-                        <div id="activeStockChange" class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs px-2.5 py-1 rounded-lg font-bold">
-                            +¥0 (0.00%)
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Chart Control & Canvas -->
-                <div class="flex items-center justify-between text-xs">
-                    <div class="flex items-center gap-2">
-                        <button id="btnTypeLine" class="bg-indigo-600 text-white px-2.5 py-1 rounded-md font-semibold flex items-center gap-1 shadow">
-                            <i class="fa-solid fa-chart-line"></i> ライン
-                        </button>
-                        <button id="btnTypeCandle" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-md font-semibold flex items-center gap-1">
-                            <i class="fa-solid fa-chart-simple"></i> ローソク足
-                        </button>
-                    </div>
-                    <div id="indicatorTips" class="text-slate-400 text-[11px] flex items-center gap-2">
-                        <span>RSI: <strong id="rsiVal" class="text-slate-200">50</strong></span>
-                        <span>移動平均(5日): <strong id="maVal" class="text-slate-200">¥2,500</strong></span>
-                    </div>
-                </div>
-
-                <div class="relative w-full h-64 bg-slate-950/60 rounded-xl p-2 border border-slate-800/80">
-                    <canvas id="stockChartCanvas" class="w-full h-full"></canvas>
-                </div>
-
-                <!-- Order Panel (Buy/Sell) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                    <!-- Buy Section -->
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center text-xs font-bold text-slate-300">
-                            <span class="text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-cart-plus"></i> 株式買い注文</span>
-                            <span>保有数: <strong id="userOwnedSharesDisplay" class="text-amber-400">0株</strong></span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <input type="number" id="buyQtyInput" min="100" step="100" value="100" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 font-bold">
-                            <span class="text-xs text-slate-400 shrink-0">株</span>
-                        </div>
-                        <div class="flex items-center justify-between text-xs text-slate-400">
-                            <span>概算概算金額:</span>
-                            <span id="buyTotalEstimate" class="font-bold text-white">¥250,000</span>
-                        </div>
-                        <button id="btnExecuteBuy" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-lg font-black text-sm shadow-lg shadow-emerald-900/30 transition active:scale-95 flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-circle-plus"></i> 買い発注 (単元:100株)
-                        </button>
-                    </div>
-
-                    <!-- Sell Section -->
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center text-xs font-bold text-slate-300">
-                            <span class="text-rose-400 flex items-center gap-1"><i class="fa-solid fa-cart-arrow-down"></i> 株式売り注文</span>
-                            <span>平均取得単価: <strong id="userAvgBuyPrice" class="text-slate-300">¥0</strong></span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <input type="number" id="sellQtyInput" min="100" step="100" value="100" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500 font-bold">
-                            <span class="text-xs text-slate-400 shrink-0">株</span>
-                        </div>
-                        <div class="flex items-center justify-between text-xs text-slate-400">
-                            <span>概算売却額:</span>
-                            <span id="sellTotalEstimate" class="font-bold text-white">¥250,000</span>
-                        </div>
-                        <button id="btnExecuteSell" class="w-full bg-rose-600 hover:bg-rose-500 text-white py-2.5 rounded-lg font-black text-sm shadow-lg shadow-rose-900/30 transition active:scale-95 flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-circle-minus"></i> 売り発注
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Next Day / Week Advance Controller -->
-                <div class="flex items-center justify-between gap-4 pt-2">
-                    <div class="text-xs text-slate-400 flex items-center gap-1">
-                        <i class="fa-solid fa-circle-info text-indigo-400"></i>
-                        <span>判断が終わったら「市場を進める」を押して株価を変動させよう。</span>
-                    </div>
-                    <button id="btnAdvanceTurn" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-6 py-3 rounded-xl text-base shadow-xl shadow-amber-500/20 transition transform active:scale-95 flex items-center gap-2 shrink-0">
-                        <span id="advanceBtnText">次の日に進む (Day 2へ)</span> <i class="fa-solid fa-forward"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Portfolio Hold List & DCA / Dividend Settings -->
-            <div class="glass-panel rounded-2xl p-5 space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-briefcase text-amber-400"></i> 保有銘柄一覧 & ポートフォリオ
-                    </h3>
-                    <div id="longTermDCABanner" class="hidden text-xs bg-indigo-900/60 text-indigo-300 border border-indigo-700 px-3 py-1 rounded-full font-semibold">
-                        <i class="fa-solid fa-arrows-rotate"></i> 自動積立機能（長期モード）有効
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left">
-                        <thead class="bg-slate-900/80 text-slate-400 font-semibold border-b border-slate-800">
-                            <tr>
-                                <th class="p-3">銘柄名</th>
-                                <th class="p-3">保有数</th>
-                                <th class="p-3">平均取得単価</th>
-                                <th class="p-3">現在株価</th>
-                                <th class="p-3">評価額</th>
-                                <th class="p-3">損益 (損益率)</th>
-                                <th class="p-3 text-center">積立設定</th>
-                            </tr>
-                        </thead>
-                        <tbody id="portfolioTableBody" class="divide-y divide-slate-800/60 text-slate-200">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- Right Side: AI Assistant, Benefits, Badges & Reflection (4 Cols) -->
-        <section class="lg:col-span-4 flex flex-col gap-5">
-            
-            <!-- AI Advisor Bot "株タロー" Card -->
-            <div class="glass-panel rounded-2xl p-4 border-l-4 border-l-amber-500 relative overflow-hidden">
-                <div class="flex items-start gap-3">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-indigo-600 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shrink-0">
-                        🤖
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h3 class="font-black text-sm text-white">AI助言アナリスト「株タロー」</h3>
-                            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">学習BOT</span>
-                        </div>
-                        <p id="aiAdvisorMessage" class="text-xs text-slate-300 mt-1.5 leading-relaxed bg-slate-900/70 p-2.5 rounded-lg border border-slate-800">
-                            「いらっしゃい！株式投資へようこそ。まずは市場ニュースをチェックしながら、気になる銘柄を分散して100株買ってみるのがおすすめだぞ！」
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Shareholder Benefit Cards (優待カード) -->
-            <div class="glass-panel rounded-2xl p-4 space-y-3">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-bold text-sm text-white flex items-center gap-2">
-                        <i class="fa-solid fa-gift text-rose-400"></i> 株主優待コレクション
-                    </h3>
-                    <span id="benefitUnlockedCount" class="text-xs text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">0 / 18 獲得</span>
-                </div>
-                <p class="text-[11px] text-slate-400">株式を100株/500株/1000株と保有し続けることで特製カードを獲得！</p>
-                
-                <div id="benefitCardsGrid" class="grid grid-cols-2 gap-2.5 max-h-64 overflow-y-auto pr-1">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
-            <!-- Achievement Badges (15+ Badges) -->
-            <div class="glass-panel rounded-2xl p-4 space-y-3">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-bold text-sm text-white flex items-center gap-2">
-                        <i class="fa-solid fa-award text-amber-400"></i> 投資家実績バッジ
-                    </h3>
-                    <span id="badgeUnlockedCount" class="text-xs text-indigo-300 font-bold bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">0 / 15 獲得</span>
-                </div>
-                <div id="badgesGrid" class="grid grid-cols-3 gap-2 max-h-56 overflow-y-auto pr-1">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
-            <!-- Reflection / End Game Trigger Button -->
-            <div class="glass-panel rounded-2xl p-4 space-y-3 text-center">
-                <h3 class="text-sm font-bold text-slate-200">授業用 振り返りレポート</h3>
-                <p class="text-xs text-slate-400">シミュレーション結果の自己分析診断と総合学習提出用レポートを自動生成します。</p>
-                <button id="btnOpenReport" class="w-full bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-indigo-500/40 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition">
-                    <i class="fa-solid fa-file-lines text-base"></i> 振り返りシートを表示・出力
-                </button>
-            </div>
-
-        </section>
-    </main>
-
-    <!-- Settings & Reset Modal -->
-    <div id="settingsModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel max-w-md w-full rounded-2xl p-6 border border-slate-700 shadow-2xl space-y-5">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="text-lg font-black text-white flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-amber-400"></i> 投資モード設定 / リセット
-                </h3>
-                <button id="btnCloseSettings" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-2">投資モード選択</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button id="selectModeShort" class="p-3 rounded-xl border text-left transition space-y-1 bg-indigo-950/80 border-indigo-500 text-white">
-                            <div class="font-bold text-xs text-amber-400"><i class="fa-solid fa-bolt"></i> 短期投資モード</div>
-                            <div class="text-[11px] text-slate-300">10日間（日次更新）<br>デイトレ・スイング重視</div>
-                        </button>
-                        <button id="selectModeLong" class="p-3 rounded-xl border text-left transition space-y-1 bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700">
-                            <div class="font-bold text-xs text-indigo-400"><i class="fa-solid fa-calendar-days"></i> 長期投資モード</div>
-                            <div class="text-[11px] text-slate-400">52週間（週次更新）<br>配当金・積立設定に対応</div>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-amber-950/30 border border-amber-800/40 p-3 rounded-xl text-xs text-amber-200/80 space-y-1">
-                    <div class="font-bold flex items-center gap-1"><i class="fa-solid fa-shield-halved"></i> データの引き継ぎ保存</div>
-                    <p>※ゲームをリセットしても、獲得した「株主優待カード」および「実績バッジ」は保持されます。</p>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-end gap-3 border-t border-slate-800 pt-3">
-                <button id="btnResetGame" class="bg-rose-900/50 hover:bg-rose-800 text-rose-200 border border-rose-700 text-xs px-4 py-2 rounded-lg font-bold">
-                    新規スタート (全リセット)
-                </button>
-                <button id="btnApplySettings" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs px-5 py-2 rounded-lg font-black">
-                    設定を適用して開始
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reflection Report Modal -->
-    <div id="reportModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-2xl p-6 border border-slate-700 shadow-2xl space-y-5">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="text-lg font-black text-white flex items-center gap-2">
-                    <i class="fa-solid fa-graduation-cap text-indigo-400"></i> 総合学習用 振り返りレポート
-                </h3>
-                <button id="btnCloseReport" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <div id="reportPrintArea" class="space-y-4 text-xs bg-slate-900 p-5 rounded-xl border border-slate-800">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                    <span class="text-slate-400 font-semibold">提出用学習シート</span>
-                    <span id="reportDateText" class="text-slate-400">日付: ----/--/--</span>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3 bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <div>投資モード: <strong id="reportModeText" class="text-amber-400">短期投資 (10日)</strong></div>
-                    <div>最終総資産: <strong id="reportFinalAsset" class="text-emerald-400">¥1,000,000</strong></div>
-                    <div>総収益率: <strong id="reportReturnRate" class="text-indigo-400">+0.0%</strong></div>
-                    <div>総取引回数: <strong id="reportTradeCount" class="text-slate-200">0 回</strong></div>
-                </div>
-
-                <div class="space-y-1">
-                    <div class="font-bold text-amber-400 text-sm flex items-center gap-1.5">
-                        <i class="fa-solid fa-user-astronaut"></i> 投資スタイル診断タイプ
-                    </div>
-                    <div id="reportStyleType" class="text-sm font-black text-white bg-indigo-950/60 border border-indigo-800/60 p-2.5 rounded-lg">
-                        分析中...
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <div class="font-bold text-slate-300">■ 授業での学習・振り返り評価 (自動評価)</div>
-                    <p id="reportEvaluationText" class="text-slate-300 leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800">
-                        --
-                    </p>
-                </div>
-
-                <div class="space-y-2">
-                    <div class="font-bold text-slate-300">■ 得られた気づきと今後の課題（自由記述用テンプレート）</div>
-                    <textarea id="reportUserNotes" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500" rows="3" placeholder="例：北辰素材の台風ニュースの直後に急落したため、リスク管理として他業種への分散投資の重要性を学んだ。"></textarea>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between border-t border-slate-800 pt-3">
-                <button id="btnCopyReport" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-4 py-2 rounded-lg font-bold flex items-center gap-1.5">
-                    <i class="fa-solid fa-copy"></i> テキストをクリップボードにコピー
-                </button>
-                <button id="btnCloseReport2" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-4 py-2 rounded-lg font-bold">
-                    閉じる
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Core Game Engine JS Script -->
-    <script>
-        /**
-         * Stock Market Simulation - Integrated Learning Edition
-         */
-
-        // Initial Preserved Companies Specification
-        const COMPANIES = [
-            { id: 'aoba', sector: '技術', name: '青葉テクノ', basePrice: 2500, desc: '次世代AI半導体とロボティクス技術を開発する先進IT企業。', volatility: 0.04 },
-            { id: 'minato', sector: '情報通信', name: 'みなと情報社', basePrice: 1800, desc: 'クラウド基盤とセキュリティソリューションを提供する大手ITサービス。', volatility: 0.03 },
-            { id: 'hiyori', sector: '消費', name: '日和ライフ', basePrice: 1200, desc: '全国展開するプライベートブランド食品・日用品チェーン。', volatility: 0.02 },
-            { id: 'hokushin', sector: '素材', name: '北辰素材', basePrice: 3100, desc: '高機能化学素材やレアメタル代替材料を供給するグローバル素材メーカー。', volatility: 0.035 },
-            { id: 'touyama', sector: '資本財・その他', name: '橙山エンジニアリング', basePrice: 4200, desc: 'スマート工場向け産業用機械および環境インフラ装置を製造。', volatility: 0.025 },
-            { id: 'shiranami', sector: '運輸・交通', name: '白波ロジスティクス', basePrice: 950, desc: '国際海上輸送と自動倉庫ドローン配送を手がける物流イノベーター。', volatility: 0.03 }
-        ];
-
-        // 15+ Unique Achievement Badges
-        const ACHIEVEMENTS = [
-            { id: 'first_buy', name: 'ファーストステップ', icon: '🐣', desc: '初めて株式を購入した' },
-            { id: 'diversified_3', name: '分散投資の初心者', icon: '🎯', desc: '3社以上の株式を同時に保有' },
-            { id: 'diversified_6', name: '分散投資の神', icon: '🌐', desc: '全6社の株式を同時に保有' },
-            { id: 'asset_120', name: 'プチ富豪', icon: '💰', desc: '総資産が 120万円 に到達' },
-            { id: 'asset_150', name: '億り人予備軍', icon: '🚀', desc: '総資産が 150万円 に到達' },
-            { id: 'asset_200', name: '億り人', icon: '👑', desc: '総資産が 200万円 に到達' },
-            { id: 'contrarian', name: '逆張りバカ一代', icon: '⚡', desc: '株価前日比-5%以上の暴落時に買い注文を実行' },
-            { id: 'dip_buyer', name: '押し目買いの達人', icon: '📉', desc: '値下がりした銘柄で利確を成功させた' },
-            { id: 'survivor', name: '暴落を生き延びた者', icon: '🛡️', desc: '悪材料ニュース発動時に損失を抑えて切り抜けた' },
-            { id: 'dca_master', name: 'インデックス信者', icon: '🔄', desc: '長期モードで自動積立を設定した' },
-            { id: 'dividend_earner', name: '不労所得者', icon: '💎', desc: '配当金を累計¥10,000以上受け取った' },
-            { id: 'collector_3', name: '優待ハンター', icon: '🎁', desc: '株主優待カードを3枚以上解放' },
-            { id: 'collector_gold', name: 'ゴールド株主', icon: '🌟', desc: 'ゴールド等級の株主優待カードを獲得' },
-            { id: 'trader_10', name: 'デイトレーダー', icon: '📊', desc: '累計10回以上の売買取引を行った' },
-            { id: 'complete_10d', name: '短期達成', icon: '🏁', desc: '10日間の短期シミュレーションを完了した' }
-        ];
-
-        // Shareholder Benefit Definitions
-        const BENEFIT_TIERS = [
-            { threshold: 100, rank: 'ブロンズ', color: 'border-amber-700 bg-amber-950/40 text-amber-300' },
-            { threshold: 500, rank: 'シルバー', color: 'border-slate-400 bg-slate-900 text-slate-200' },
-            { threshold: 1000, rank: 'ゴールド', color: 'border-amber-400 bg-amber-900/60 text-amber-200 shiny-gold' }
-        ];
-
-        const BENEFIT_DETAILS = {
-            aoba: {
-                100: '最新AIガジェット試作用試供品',
-                500: '開発者試走ラボ特別招待券',
-                1000: '次世代ロボット優先配属権カード'
-            },
-            minato: {
-                100: 'クラウドストレージ1TB 1年間無料',
-                500: '超高速5Gモバイルルーター招待状',
-                1000: 'データセンターVIPツアーカード'
-            },
-            hiyori: {
-                100: '一生分のお菓子割引券',
-                500: 'プライベートブランド詰合せ箱',
-                1000: '全店10%オフ プレミアムブラックカード'
-            },
-            hokushin: {
-                100: '超軽量チタン製キーホルダー',
-                500: '新素材開発セミナー参加チケット',
-                1000: '特製レアメタル記念プレート'
-            },
-            touyama: {
-                100: '精密プラモデル限定キット',
-                500: '工場見学＆特製ヘルメットセット',
-                1000: 'オーダーメイド精密工具セット'
-            },
-            shiranami: {
-                100: 'オリジナル折りたたみバッグ',
-                500: 'ドローン配送無料クーポン5枚',
-                1000: 'ファーストクラス特別搭乗パス'
-            }
-        };
-
-        // Random Market News Events Database
-        const MARKET_EVENTS = [
-            { text: '【速報】青葉テクノが次世代AIチップの世界的特許を取得！株価急上昇の予感。', target: 'aoba', effect: 0.12, type: 'up' },
-            { text: '【事故】北辰素材の主力工場に巨大台風が直撃！生産ラインストップの懸念。', target: 'hokushin', effect: -0.10, type: 'down' },
-            { text: '【話題】有名インフルエンサーが日和ライフのPB商品をSNSで絶賛し大バズ！', target: 'hiyori', effect: 0.08, type: 'up' },
-            { text: '【好調】白波ロジスティクスの自動ドローン配送網が全国拡大、業績拡大へ。', target: 'shiranami', effect: 0.07, type: 'up' },
-            { text: '【難航】みなと情報社の大型クラウドサーバーで一時的な障害が発生。', target: 'minato', effect: -0.06, type: 'down' },
-            { text: '【好業績】橙山エンジニアリングが海外の大型インフラプロジェクトを受注！', target: 'touyama', effect: 0.09, type: 'up' }
-        ];
-
-        // System State
-        let gameState = {
-            mode: 'short', // 'short' (10 days) or 'long' (52 weeks)
-            currentTurn: 1,
-            maxTurns: 10,
-            cash: 1000000,
-            initialCapital: 1000000,
-            activeCompanyId: 'aoba',
-            chartType: 'line', // 'line' or 'candle'
-            stocks: {}, // { companyId: { history: [{day, open, high, low, close}], owned: 0, avgPrice: 0, dcaAmount: 0 } }
-            tradeCount: 0,
-            totalDividends: 0,
-            unlockedBadges: [],
-            unlockedBenefits: [] // Array of string IDs e.g. "aoba_100"
-        };
-
-        // Canvas & Chart References
-        let chartCanvas, chartCtx;
-
-        // --- Initialization ---
-        window.addEventListener('DOMContentLoaded', () => {
-            chartCanvas = document.getElementById('stockChartCanvas');
-            chartCtx = chartCanvas.getContext('2d');
-
-            loadPersistentData();
-            initStockData();
-            setupUIEventListeners();
-            resizeCanvas();
-            renderAll();
-
-            window.addEventListener('resize', () => {
-                resizeCanvas();
-                renderChart();
-            });
-        });
-
-        // Save & Load LocalStorage
-        function loadPersistentData() {
-            try {
-                const savedBadges = localStorage.getItem('kabu_sim_badges');
-                if (savedBadges) gameState.unlockedBadges = JSON.parse(savedBadges);
-
-                const savedBenefits = localStorage.getItem('kabu_sim_benefits');
-                if (savedBenefits) gameState.unlockedBenefits = JSON.parse(savedBenefits);
-            } catch (e) {
-                console.error("LocalStorage error:", e);
-            }
-        }
-
-        function savePersistentData() {
-            try {
-                localStorage.setItem('kabu_sim_badges', JSON.stringify(gameState.unlockedBadges));
-                localStorage.setItem('kabu_sim_benefits', JSON.stringify(gameState.unlockedBenefits));
-            } catch (e) { me
-                console.error("LocalStorage save error:", e);
-            }
-        }
-
-        // Initialize Stock Price Histories
-        function initStockData() {
-            COMPANIES.forEach(comp => {
-                let startPrice = comp.basePrice;
-                let history = [];
-                // Generate initial 5 historical data points
-                for (let i = -4; i <= 0; i++) {
-                    let change = (Math.random() - 0.48) * comp.volatility * startPrice;
-                    let close = Math.max(100, Math.round(startPrice + change));
-                    let high = Math.round(Math.max(startPrice, close) + Math.random() * 20);
-                    let low = Math.round(Math.min(startPrice, close) - Math.random() * 20);
-                    history.push({
-                        period: i,
-                        open: startPrice,
-                        high: high,
-                        low: low,
-                        close: close
-                    });
-                    startPrice = close;
-                }
-
-                gameState.stocks[comp.id] = {
-                    history: history,
-                    owned: 0,
-                    avgPrice: 0,
-                    dcaAmount: 0
-                };
-            });
-        }
-
-        // Setup Event Listeners
-        function setupUIEventListeners() {
-            // Stock Tabs Switch
-            renderStockTabs();
-
-            // Quantity Input Updates
-            document.getElementById('buyQtyInput').addEventListener('input', updateBuySellEstimates);
-            document.getElementById('sellQtyInput').addEventListener('input', updateBuySellEstimates);
-
-            // Buy & Sell Execution
-            document.getElementById('btnExecuteBuy').addEventListener('click', executeBuy);
-            document.getElementById('btnExecuteSell').addEventListener('click', executeSell);
-
-            // Turn Advancement
-            document.getElementById('btnAdvanceTurn').addEventListener('click', advanceTurn);
-
-            // Chart Type Switching
-            document.getElementById('btnTypeLine').addEventListener('click', () => {
-                gameState.chartType = 'line';
-                updateChartTypeButtons();
-                renderChart();
-            });
-            document.getElementById('btnTypeCandle').addEventListener('click', () => {
-                gameState.chartType = 'candle';
-                updateChartTypeButtons();
-                renderChart();
-            });
-
-            // Settings Modal Controls
-            document.getElementById('btnOpenSettings').addEventListener('click', () => {
-                document.getElementById('settingsModal').classList.remove('hidden');
-            });
-            document.getElementById('btnCloseSettings').addEventListener('click', () => {
-                document.getElementById('settingsModal').classList.add('hidden');
-            });
-            document.getElementById('selectModeShort').addEventListener('click', () => setModeSelection('short'));
-            document.getElementById('selectModeLong').addEventListener('click', () => setModeSelection('long'));
-            document.getElementById('btnApplySettings').addEventListener('click', applyModeSettings);
-            document.getElementById('btnResetGame').addEventListener('click', resetFullGame);
-
-            // Reflection Report Modal Controls
-            document.getElementById('btnOpenReport').addEventListener('click', generateReflectionReport);
-            document.getElementById('btnCloseReport').addEventListener('click', () => {
-                document.getElementById('reportModal').classList.add('hidden');
-            });
-            document.getElementById('btnCloseReport2').addEventListener('click', () => {
-                document.getElementById('reportModal').classList.add('hidden');
-            });
-            document.getElementById('btnCopyReport').addEventListener('click', copyReportToClipboard);
-        }
-
-        // Render Stock Navigation Tabs
-        function renderStockTabs() {
-            const container = document.getElementById('stockTabsContainer');
-            container.innerHTML = '';
-
-            COMPANIES.forEach(comp => {
-                const stockInfo = gameState.stocks[comp.id];
-                const currentPrice = stockInfo.history[stockInfo.history.length - 1].close;
-                const prevPrice = stockInfo.history[stockInfo.history.length - 2].close;
-                const diff = currentPrice - prevPrice;
-                const isUp = diff >= 0;
-
-                const btn = document.createElement('button');
-                btn.className = `px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 flex items-center gap-2 border transition ${
-                    gameState.activeCompanyId === comp.id
-                        ? 'bg-indigo-600 border-indigo-400 text-white shadow-lg'
-                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800'
-                }`;
-
-                btn.innerHTML = `
-                    <span class="w-2 h-2 rounded-full ${isUp ? 'bg-emerald-400' : 'bg-rose-400'}"></span>
-                    <span>${comp.name}</span>
-                    <span class="${isUp ? 'text-emerald-400' : 'text-rose-400'} font-extrabold">¥${currentPrice.toLocaleString()}</span>
-                `;
-
-                btn.onclick = () => {
-                    gameState.activeCompanyId = comp.id;
-                    renderStockTabs();
-                    renderActiveStockPanel();
-                    renderChart();
-                };
-
-                container.appendChild(btn);
-            });
-        }
-
-        // Mode Switch Panel
-        function setModeSelection(mode) {
-            const shortBtn = document.getElementById('selectModeShort');
-            const longBtn = document.getElementById('selectModeLong');
-
-            if (mode === 'short') {
-                shortBtn.className = 'p-3 rounded-xl border text-left transition space-y-1 bg-indigo-950/80 border-indigo-500 text-white';
-                longBtn.className = 'p-3 rounded-xl border text-left transition space-y-1 bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700';
-            } else {
-                longBtn.className = 'p-3 rounded-xl border text-left transition space-y-1 bg-indigo-950/80 border-indigo-500 text-white';
-                shortBtn.className = 'p-3 rounded-xl border text-left transition space-y-1 bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700';
-            }
-            shortBtn.dataset.selected = (mode === 'short');
-        }
-
-        function applyModeSettings() {
-            const isShort = document.getElementById('selectModeShort').dataset.selected !== 'false';
-            gameState.mode = isShort ? 'short' : 'long';
-            gameState.maxTurns = isShort ? 10 : 52;
-            document.getElementById('settingsModal').classList.add('hidden');
-            resetFullGame();
-        }
-
-        function resetFullGame() {
-            gameState.currentTurn = 1;
-            gameState.cash = 1000000;
-            gameState.tradeCount = 0;
-            gameState.totalDividends = 0;
-            initStockData();
-            renderAll();
-            document.getElementById('settingsModal').classList.add('hidden');
-        }
-
-        // --- Core Simulation Logic ---
-
-        // Buy Logic
-        function executeBuy() {
-            const comp = COMPANIES.find(c => c.id === gameState.activeCompanyId);
-            const stock = gameState.stocks[comp.id];
-            const price = stock.history[stock.history.length - 1].close;
-            const qty = parseInt(document.getElementById('buyQtyInput').value) || 0;
-
-            if (qty <= 0 || qty % 100 !== 0) {
-                alert('注文単位は100株単位で入力してください。');
-                return;
-            }
-
-            const totalCost = price * qty;
-            if (totalCost > gameState.cash) {
-                alert('利用可能現金が不足しています。');
-                return;
-            }
-
-            // Execute transaction
-            gameState.cash -= totalCost;
-            const totalOwned = stock.owned + qty;
-            stock.avgPrice = Math.round(((stock.owned * stock.avgPrice) + totalCost) / totalOwned);
-            stock.owned = totalOwned;
-            gameState.tradeCount++;
-
-            // Check Achievements
-            unlockBadge('first_buy');
-            checkPortfolioAchievements();
-            checkBenefitCards(comp.id, stock.owned);
-
-            // Check Contrarian Badge
-            const prevPrice = stock.history[stock.history.length - 2].close;
-            if ((price - prevPrice) / prevPrice <= -0.05) {
-                unlockBadge('contrarian');
-            }
-
-            renderAll();
-        }
-
-        // Sell Logic
-        function executeSell() {
-            const comp = COMPANIES.find(c => c.id === gameState.activeCompanyId);
-            const stock = gameState.stocks[comp.id];
-            const price = stock.history[stock.history.length - 1].close;
-            const qty = parseInt(document.getElementById('sellQtyInput').value) || 0;
-
-            if (qty <= 0 || qty % 100 !== 0) {
-                alert('注文単位は100株単位で入力してください。');
-                return;
-            }
-
-            if (qty > stock.owned) {
-                alert('保有している株式数を超えています。');
-                return;
-            }
-
-            // Execute sell
-            const totalGain = price * qty;
-            gameState.cash += totalGain;
-            stock.owned -= qty;
-            if (stock.owned === 0) stock.avgPrice = 0;
-            gameState.tradeCount++;
-
-            // Dip buyer achievement
-            if (price > stock.avgPrice) {
-                unlockBadge('dip_buyer');
-            }
-
-            renderAll();
-        }
-
-        // Advance Turn (Day or Week)
-        function advanceTurn() {
-            if (gameState.currentTurn >= gameState.maxTurns) {
-                generateReflectionReport();
-                unlockBadge('complete_10d');
-                return;
-            }
-
-            gameState.currentTurn++;
-
-            // Process Random Event Trigger (15% chance)
-            let eventOccurred = null;
-            if (Math.random() < 0.25) {
-                eventOccurred = MARKET_EVENTS[Math.floor(Math.random() * MARKET_EVENTS.length)];
-            }
-
-            // Update Stock Prices for all companies
-            COMPANIES.forEach(comp => {
-                const stock = gameState.stocks[comp.id];
-                const lastClose = stock.history[stock.history.length - 1].close;
-
-                let changePct = (Math.random() - 0.49) * comp.volatility;
-
-                // Apply Event Impact if matched
-                if (eventOccurred && eventOccurred.target === comp.id) {
-                    changePct += eventOccurred.effect;
-                }
-
-                let newClose = Math.max(50, Math.round(lastClose * (1 + changePct)));
-                let open = lastClose;
-                let high = Math.round(Math.max(open, newClose) * (1 + Math.random() * 0.015));
-                let low = Math.round(Math.min(open, newClose) * (1 - Math.random() * 0.015));
-
-                stock.history.push({
-                    period: gameState.currentTurn,
-                    open: open,
-                    high: high,
-                    low: low,
-                    close: newClose
-                });
-
-                // Long Term Mode DCA (Dollar Cost Averaging) Execution
-                if (gameState.mode === 'long' && stock.dcaAmount > 0) {
-                    let dcaQty = Math.floor(stock.dcaAmount / newClose / 100) * 100;
-                    if (dcaQty > 0 && gameState.cash >= dcaQty * newClose) {
-                        gameState.cash -= dcaQty * newClose;
-                        let totalOwned = stock.owned + dcaQty;
-                        stock.avgPrice = Math.round(((stock.owned * stock.avgPrice) + (dcaQty * newClose)) / totalOwned);
-                        stock.owned = totalOwned;
-                        unlockBadge('dca_master');
-                    }
-                }
-
-                // Long Term Mode Dividends (Quarterly at Week 13, 26, 39, 52)
-                if (gameState.mode === 'long' && stock.owned > 0 && gameState.currentTurn % 13 === 0) {
-                    let dividendPerShare = Math.round(newClose * 0.015); // ~1.5% dividend yield
-                    let divPayout = dividendPerShare * stock.owned;
-                    gameState.cash += divPayout;
-                    gameState.totalDividends += divPayout;
-                    if (gameState.totalDividends >= 10000) unlockBadge('dividend_earner');
-                }
-            });
-
-            // Update News Ticker Bar
-            if (eventOccurred) {
-                document.getElementById('newsTickerContent').innerText = `${eventOccurred.text}`;
-            }
-
-            // Check Overall Asset Achievements
-            checkAssetAchievements();
-
-            renderAll();
-        }
-
-        // --- Render & UI Update Functions ---
-
-        function renderAll() {
-            renderHeaderAndStats();
-            renderStockTabs();
-            renderActiveStockPanel();
-            renderChart();
-            renderPortfolioTable();
-            renderBenefitCards();
-            renderBadges();
-            updateAIAdvisor();
-        }
-
-        function renderHeaderAndStats() {
-            // Mode Banner
-            const modeName = gameState.mode === 'short' ? '短期投資モード (10日)' : '長期投資モード (52週)';
-            document.getElementById('currentModeName').innerText = modeName;
-            document.getElementById('turnCounterText').innerText = `${gameState.mode === 'short' ? 'Day' : 'Week'} ${gameState.currentTurn} / ${gameState.maxTurns}`;
-
-            // Total Portfolio Assets
-            let totalStockValuation = 0;
-            COMPANIES.forEach(comp => {
-                const stock = gameState.stocks[comp.id];
-                const currentPrice = stock.history[stock.history.length - 1].close;
-                totalStockValuation += stock.owned * currentPrice;
-            });
-
-            const totalAssets = gameState.cash + totalStockValuation;
-            const netReturn = totalAssets - gameState.initialCapital;
-            const netReturnPct = ((netReturn / gameState.initialCapital) * 100).toFixed(2);
-
-            document.getElementById('totalAssetsDisplay').innerText = `¥${totalAssets.toLocaleString()}`;
-            document.getElementById('cashDisplay').innerText = `¥${gameState.cash.toLocaleString()}`;
-
-            const returnElem = document.getElementById('totalReturnDiff');
-            returnElem.className = `flex items-center text-xs font-bold gap-1 ${netReturn >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
-            returnElem.innerHTML = `前日比 / 損益: ${netReturn >= 0 ? '+' : ''}¥${netReturn.toLocaleString()} (${netReturnPct}%)`;
-
-            // SVG Pie Chart Update
-            const stockPct = Math.min(100, Math.max(0, Math.round((totalStockValuation / totalAssets) * 100)));
-            const cashPct = 100 - stockPct;
-
-            document.getElementById('pieCashPct').innerText = `${cashPct}%`;
-            document.getElementById('pieStockPct').innerText = `${stockPct}%`;
-            document.getElementById('portfolioWeightText').innerText = `株式比率: ${stockPct}%`;
-
-            document.getElementById('svgPieCash').setAttribute('stroke-dasharray', `${cashPct}, 100`);
-            document.getElementById('svgPieStocks').setAttribute('stroke-dasharray', `${stockPct}, 100`);
-            document.getElementById('svgPieStocks').setAttribute('stroke-dashoffset', `-${cashPct}`);
-
-            // Long term DCA banner toggle
-            const dcaBanner = document.getElementById('longTermDCABanner');
-            if (gameState.mode === 'long') {
-                dcaBanner.classList.remove('hidden');
-            } else {
-                dcaBanner.classList.add('hidden');
-            }
-
-            // Button label for turn advance
-            const btnText = document.getElementById('advanceBtnText');
-            if (gameState.currentTurn >= gameState.maxTurns) {
-                btnText.innerText = 'シミュレーション完了（結果表示）';
-            } else {
-                btnText.innerText = `次の${gameState.mode === 'short' ? '日' : '週'}に進む (${gameState.mode === 'short' ? 'Day' : 'Week'} ${gameState.currentTurn + 1}へ)`;
-            }
-        }
-
-        function renderActiveStockPanel() {
-            const comp = COMPANIES.find(c => c.id === gameState.activeCompanyId);
-            const stock = gameState.stocks[comp.id];
-            const currentPrice = stock.history[stock.history.length - 1].close;
-            const prevPrice = stock.history.length > 1 ? stock.history[stock.history.length - 2].close : currentPrice;
-            const diff = currentPrice - prevPrice;
-            const diffPct = ((diff / prevPrice) * 100).toFixed(2);
-
-            document.getElementById('activeCompanyName').innerText = comp.name;
-            document.getElementById('activeCompanySector').innerText = comp.sector;
-            document.getElementById('activeCompanyDesc').innerText = comp.desc;
-            document.getElementById('activeStockPrice').innerText = `¥${currentPrice.toLocaleString()}`;
-
-            const changeBox = document.getElementById('activeStockChange');
-            changeBox.className = `border text-xs px-2.5 py-1 rounded-lg font-bold ${diff >= 0 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border-rose-500/30'}`;
-            changeBox.innerText = `${diff >= 0 ? '+' : ''}¥${diff.toLocaleString()} (${diffPct}%)`;
-
-            document.getElementById('userOwnedSharesDisplay').innerText = `${stock.owned.toLocaleString()}株`;
-            document.getElementById('userAvgBuyPrice').innerText = `¥${stock.avgPrice.toLocaleString()}`;
-
-            // Indicators (RSI & Moving Average)
-            const ma = Math.round(stock.history.slice(-5).reduce((acc, h) => acc + h.close, 0) / Math.min(5, stock.history.length));
-            const rsi = calculateRSI(stock.history);
-
-            document.getElementById('maVal').innerText = `¥${ma.toLocaleString()}`;
-            document.getElementById('rsiVal').innerText = `${rsi}`;
-
-            updateBuySellEstimates();
-        }
-
-        function updateBuySellEstimates() {
-            const comp = COMPANIES.find(c => c.id === gameState.activeCompanyId);
-            const stock = gameState.stocks[comp.id];
-            const price = stock.history[stock.history.length - 1].close;
-
-            const buyQty = parseInt(document.getElementById('buyQtyInput').value) || 0;
-            const sellQty = parseInt(document.getElementById('sellQtyInput').value) || 0;
-
-            document.getElementById('buyTotalEstimate').innerText = `¥${(buyQty * price).toLocaleString()}`;
-            document.getElementById('sellTotalEstimate').innerText = `¥${(sellQty * price).toLocaleString()}`;
-        }
-
-        // --- HTML Canvas Chart Renderer (Line & Candlestick) ---
-        function resizeCanvas() {
-            if (!chartCanvas) return;
-            const rect = chartCanvas.parentElement.getBoundingClientRect();
-            chartCanvas.width = rect.width;
-            chartCanvas.height = rect.height;
-        }
-
-        function renderChart() {
-            if (!chartCtx) return;
-            const comp = COMPANIES.find(c => c.id === gameState.activeCompanyId);
-            const history = gameState.stocks[comp.id].history;
-
-            const w = chartCanvas.width;
-            const h = chartCanvas.height;
-
-            chartCtx.clearRect(0, 0, w, h);
-
-            if (history.length === 0) return;
-
-            // Compute min and max bounds
-            let minP = Infinity, maxP = -Infinity;
-            history.forEach(item => {
-                if (item.low < minP) minP = item.low;
-                if (item.high > maxP) maxP = item.high;
-            });
-            const padding = (maxP - minP) * 0.15 || 50;
-            minP -= padding;
-            maxP += padding;
-
-            const getX = (idx) => 40 + (idx / (history.length - 1 || 1)) * (w - 60);
-            const getY = (val) => h - 30 - ((val - minP) / (maxP - minP)) * (h - 50);
-
-            // Draw Background Grid Lines
-            chartCtx.strokeStyle = '#334155';
-            chartCtx.lineWidth = 0.5;
-            for (let i = 0; i <= 4; i++) {
-                let gridY = 20 + i * ((h - 50) / 4);
-                let val = Math.round(maxP - i * ((maxP - minP) / 4));
-                chartCtx.beginPath();
-                chartCtx.moveTo(40, gridY);
-                chartCtx.lineTo(w - 10, gridY);
-                chartCtx.stroke();
-
-                chartCtx.fillStyle = '#94a3b8';
-                chartCtx.font = '10px sans-serif';
-                chartCtx.fillText(`¥${val}`, 5, gridY + 3);
-            }
-
-            // Draw Line Chart
-            if (gameState.chartType === 'line') {
-                chartCtx.beginPath();
-                history.forEach((item, idx) => {
-                    let x = getX(idx);
-                    let y = getY(item.close);
-                    if (idx === 0) chartCtx.moveTo(x, y);
-                    else chartCtx.lineTo(x, y);
-                });
-                chartCtx.strokeStyle = '#6366f1';
-                chartCtx.lineWidth = 2.5;
-                chartCtx.stroke();
-
-                // Gradient Fill under line
-                chartCtx.lineTo(getX(history.length - 1), h - 30);
-                chartCtx.lineTo(getX(0), h - 30);
-                chartCtx.closePath();
-                let gradient = chartCtx.createLinearGradient(0, 0, 0, h);
-                gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
-                gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
-                chartCtx.fillStyle = gradient;
-                chartCtx.fill();
-            } 
-            // Draw Candlestick Chart
-            else {
-                const candleWidth = Math.max(6, Math.min(20, (w - 60) / history.length - 4));
-
-                history.forEach((item, idx) => {
-                    let x = getX(idx);
-                    let yOpen = getY(item.open);
-                    let yClose = getY(item.close);
-                    let yHigh = getY(item.high);
-                    let yLow = getY(item.low);
-
-                    let isUp = item.close >= item.open;
-                    let candleColor = isUp ? '#10b981' : '#ef4444';
-
-                    // High Low Wick Line
-                    chartCtx.strokeStyle = candleColor;
-                    chartCtx.lineWidth = 1.5;
-                    chartCtx.beginPath();
-                    chartCtx.moveTo(x, yHigh);
-                    chartCtx.lineTo(x, yLow);
-                    chartCtx.stroke();
-
-                    // Candle Body
-                    chartCtx.fillStyle = candleColor;
-                    let top = Math.min(yOpen, yClose);
-                    let height = Math.max(2, Math.abs(yClose - yOpen));
-                    chartCtx.fillRect(x - candleWidth / 2, top, candleWidth, height);
-                });
-            }
-        }
-
-        function updateChartTypeButtons() {
-            const btnLine = document.getElementById('btnTypeLine');
-            const btnCandle = document.getElementById('btnTypeCandle');
-
-            if (gameState.chartType === 'line') {
-                btnLine.className = 'bg-indigo-600 text-white px-2.5 py-1 rounded-md font-semibold flex items-center gap-1 shadow';
-                btnCandle.className = 'bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-md font-semibold flex items-center gap-1';
-            } else {
-                btnCandle.className = 'bg-indigo-600 text-white px-2.5 py-1 rounded-md font-semibold flex items-center gap-1 shadow';
-                btnLine.className = 'bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-md font-semibold flex items-center gap-1';
-            }
-        }
-
-        // Render Portfolio Table
-        function renderPortfolioTable() {
-            const tbody = document.getElementById('portfolioTableBody');
-            tbody.innerHTML = '';
-
-            COMPANIES.forEach(comp => {
-                const stock = gameState.stocks[comp.id];
-                const currentPrice = stock.history[stock.history.length - 1].close;
-                const valuation = stock.owned * currentPrice;
-                const profit = stock.owned > 0 ? (currentPrice - stock.avgPrice) * stock.owned : 0;
-                const profitRate = stock.avgPrice > 0 ? (((currentPrice - stock.avgPrice) / stock.avgPrice) * 100).toFixed(1) : '0.0';
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-3 font-bold text-white flex items-center gap-2">
-                        <span>${comp.name}</span>
-                        <span class="text-[10px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">${comp.sector}</span>
-                    </td>
-                    <td class="p-3 font-bold ${stock.owned > 0 ? 'text-amber-400' : 'text-slate-500'}">${stock.owned.toLocaleString()} 株</td>
-                    <td class="p-3">¥${stock.avgPrice.toLocaleString()}</td>
-                    <td class="p-3 font-bold">¥${currentPrice.toLocaleString()}</td>
-                    <td class="p-3 font-bold">¥${valuation.toLocaleString()}</td>
-                    <td class="p-3 font-bold ${profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">
-                        ${profit >= 0 ? '+' : ''}¥${profit.toLocaleString()} (${profitRate}%)
-                    </td>
-                    <td class="p-3 text-center">
-                        ${gameState.mode === 'long' ? `
-                            <select onchange="updateDCASetting('${comp.id}', this.value)" class="bg-slate-950 border border-slate-700 rounded text-[11px] text-white px-1 py-0.5">
-                                <option value="0" ${stock.dcaAmount === 0 ? 'selected' : ''}>なし</option>
-                                <option value="50000" ${stock.dcaAmount === 50000 ? 'selected' : ''}>¥50,000/週</option>
-                                <option value="100000" ${stock.dcaAmount === 100000 ? 'selected' : ''}>¥100,000/週</option>
-                            </select>
-                        ` : '<span class="text-slate-600">短期不可</span>'}
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        window.updateDCASetting = function(compId, val) {
-            gameState.stocks[compId].dcaAmount = parseInt(val) || 0;
-            unlockBadge('dca_master');
-            renderPortfolioTable();
-        };
-
-        // Render Shareholder Benefit Cards
-        function renderBenefitCards() {
-            const grid = document.getElementById('benefitCardsGrid');
-            grid.innerHTML = '';
-
-            let unlockedCount = 0;
-
-            COMPANIES.forEach(comp => {
-                const stock = gameState.stocks[comp.id];
-
-                BENEFIT_TIERS.forEach(tier => {
-                    const cardKey = `${comp.id}_${tier.threshold}`;
-                    const isUnlocked = gameState.unlockedBenefits.includes(cardKey) || stock.owned >= tier.threshold;
-
-                    if (isUnlocked && !gameState.unlockedBenefits.includes(cardKey)) {
-                        gameState.unlockedBenefits.push(cardKey);
-                        savePersistentData();
-                        triggerConfetti();
-                    }
-
-                    if (isUnlocked) unlockedCount++;
-
-                    const detailText = BENEFIT_DETAILS[comp.id][tier.threshold];
-
-                    const card = document.createElement('div');
-                    card.className = `p-2.5 rounded-xl border text-xs flex flex-col justify-between space-y-1 transition ${
-                        isUnlocked ? tier.color : 'border-slate-800 bg-slate-950/40 text-slate-600 opacity-60'
-                    }`;
-
-                    card.innerHTML = `
-                        <div class="flex items-center justify-between font-bold text-[11px]">
-                            <span>${comp.name}</span>
-                            <span class="text-[9px] px-1.5 py-0.2 rounded border ${isUnlocked ? 'border-amber-400/40 bg-amber-400/10' : 'border-slate-700'}">${tier.rank} (${tier.threshold}株)</span>
-                        </div>
-                        <div class="text-[10px] font-semibold leading-tight line-clamp-2">${isUnlocked ? detailText : '？？？（株式数が不足）'}</div>
-                        <div class="text-[9px] text-right ${isUnlocked ? 'text-amber-300 font-bold' : 'text-slate-600'}">
-                            ${isUnlocked ? '<i class="fa-solid fa-circle-check"></i> 優待獲得済' : `あと ${(tier.threshold - stock.owned)} 株`}
-                        </div>
-                    `;
-
-                    grid.appendChild(card);
-                });
-            });
-
-            document.getElementById('benefitUnlockedCount').innerText = `${unlockedCount} / 18 獲得`;
-        }
-
-        // Render Achievement Badges
-        function renderBadges() {
-            const grid = document.getElementById('badgesGrid');
-            grid.innerHTML = '';
-
-            let unlockedCount = gameState.unlockedBadges.length;
-
-            ACHIEVEMENTS.forEach(badge => {
-                const isUnlocked = gameState.unlockedBadges.includes(badge.id);
-
-                const card = document.createElement('div');
-                card.className = `p-2 rounded-xl border text-center flex flex-col items-center justify-center space-y-1 transition ${
-                    isUnlocked ? 'border-amber-500/50 bg-amber-950/30 text-slate-100 shadow-md' : 'border-slate-800/80 bg-slate-950/30 text-slate-600 opacity-50'
-                }`;
-
-                card.innerHTML = `
-                    <div class="text-xl">${badge.icon}</div>
-                    <div class="text-[10px] font-bold line-clamp-1">${badge.name}</div>
-                `;
-                card.title = `${badge.name}: ${badge.desc}`;
-
-                grid.appendChild(card);
-            });
-
-            document.getElementById('badgeUnlockedCount').innerText = `${unlockedCount} / 15 獲得`;
-        }
-
-        // AI Advisor Prompt Engine
-        function updateAIAdvisor() {
-            const adviceBox = document.getElementById('aiAdvisorMessage');
-            const activeComp = COMPANIES.find(c => c.id === gameState.activeCompanyId);
-            const stock = gameState.stocks[activeComp.id];
-            const history = stock.history;
-            const rsi = calculateRSI(history);
-
-            let msg = `「現在【${activeComp.name}】をチェック中だな。`;
-
-            if (rsi < 35) {
-                msg += `RSIが${rsi}まで低下しているぞ！売られすぎ（割安）のシグナルかもしれないから、買いを検討してもいいかも！」`;
-            } else if (rsi > 70) {
-                msg += `RSIが${rsi}と高く、買われすぎの警戒感が出ているぞ。高値掴みに注意して利益確定も視野に入れよう！」`;
-            } else if (stock.owned === 0) {
-                msg += `まずは余剰資金を使って100株買ってみることで、株価の動きに対する関心が高まるぞ！」`;
-            } else {
-                msg += `順調に保有できているな。1つの銘柄に集中させず、他業種の銘柄にも投資して分散リスクを管理しよう！」`;
-            }
-
-            adviceBox.innerText = msg;
-        }
-
-        // Calculate RSI (Relative Strength Index)
-        function calculateRSI(history) {
-            if (history.length < 5) return 50;
-            let gains = 0, losses = 0;
-            for (let i = history.length - 4; i < history.length; i++) {
-                let diff = history[i].close - history[i - 1].close;
-                if (diff >= 0) gains += diff;
-                else losses += Math.abs(diff);
-            }
-            if (gains + losses === 0) return 50;
-            return Math.round((gains / (gains + losses)) * 100);
-        }
-
-        // Unlock Badge Trigger
-        function unlockBadge(badgeId) {
-            if (!gameState.unlockedBadges.includes(badgeId)) {
-                gameState.unlockedBadges.push(badgeId);
-                savePersistentData();
-                triggerConfetti();
-                renderBadges();
-            }
-        }
-
-        function checkPortfolioAchievements() {
-            let ownedCount = 0;
-            COMPANIES.forEach(c => {
-                if (gameState.stocks[c.id].owned > 0) ownedCount++;
-            });
-
-            if (ownedCount >= 3) unlockBadge('diversified_3');
-            if (ownedCount >= 6) unlockBadge('diversified_6');
-            if (gameState.tradeCount >= 10) unlockBadge('trader_10');
-        }
-
-        function checkBenefitCards(compId, ownedQty) {
-            BENEFIT_TIERS.forEach(tier => {
-                if (ownedQty >= tier.threshold) {
-                    const cardKey = `${compId}_${tier.threshold}`;
-                    if (!gameState.unlockedBenefits.includes(cardKey)) {
-                        gameState.unlockedBenefits.push(cardKey);
-                        if (tier.threshold === 1000) unlockBadge('collector_gold');
-                        savePersistentData();
-                        triggerConfetti();
-                    }
-                }
-            });
-
-            if (gameState.unlockedBenefits.length >= 3) unlockBadge('collector_3');
-        }
-
-        function checkAssetAchievements() {
-            let totalVal = gameState.cash;
-            COMPANIES.forEach(c => {
-                totalVal += gameState.stocks[c.id].owned * gameState.stocks[c.id].history[gameState.stocks[c.id].history.length - 1].close;
-            });
-
-            if (totalVal >= 1200000) unlockBadge('asset_120');
-            if (totalVal >= 1500000) unlockBadge('asset_150');
-            if (totalVal >= 2000000) unlockBadge('asset_200');
-        }
-
-        // Reflection & Learning Report Generator
-        function generateReflectionReport() {
-            let totalVal = gameState.cash;
-            let ownedSectors = new Set();
-            COMPANIES.forEach(c => {
-                if (gameState.stocks[c.id].owned > 0) {
-                    ownedSectors.add(c.sector);
-                    totalVal += gameState.stocks[c.id].owned * gameState.stocks[c.id].history[gameState.stocks[c.id].history.length - 1].close;
-                }
-            });
-
-            const netReturn = totalVal - gameState.initialCapital;
-            const netReturnPct = ((netReturn / gameState.initialCapital) * 100).toFixed(1);
-
-            // Diagnose Investment Style
-            let styleType = 'バランス型投資家';
-            let evaluation = '';
-
-            if (ownedSectors.size >= 4) {
-                styleType = '堅実・分散インカムゲイン型';
-                evaluation = '複数の業界に資金をバランス良く分散配置し、市場全体の変動リスクを最小限に抑える優れたポートフォリオを構築できました。総合学習の観点からも非常に高いリス管理能力が発揮されています。';
-            } else if (gameState.tradeCount >= 8) {
-                styleType = 'アクティブ・ハイリスクモメンタム型';
-                evaluation = '短期的な価格変動を積極的に狙うデイトレードスタイルで取引を展開しました。高い収益性を狙える反面、取引手数料や高値掴みのリスクが存在することを学べました。';
-            } else if (netReturn > 0) {
-                styleType = '着実利殖型アナリスト';
-                evaluation = '企業のニュースや指標（RSI・移動平均）を慎重に読み合わせ、確実性の高いタイミングで投資を実行し、見事に資産をプラスへ導きました。';
-            } else {
-                styleType = '逆境挑戦型チャレンジャー';
-                evaluation = '市場の予期せぬ暴落やニュースの変動により一時的な損失が発生しましたが、失敗の原因分析（高値買い・集中投資）を行うことで、株式市場の厳しさとリスク分散の必要性を実感できました。';
-            }
-
-            document.getElementById('reportDateText').innerText = `日付: ${new Date().toLocaleDateString('ja-JP')}`;
-            document.getElementById('reportModeText').innerText = gameState.mode === 'short' ? '短期投資 (10日)' : '長期投資 (52週)';
-            document.getElementById('reportFinalAsset').innerText = `¥${totalVal.toLocaleString()}`;
-            document.getElementById('reportReturnRate').innerText = `${netReturn >= 0 ? '+' : ''}${netReturnPct}%`;
-            document.getElementById('reportTradeCount').innerText = `${gameState.tradeCount} 回`;
-
-            document.getElementById('reportStyleType').innerText = styleType;
-            document.getElementById('reportEvaluationText').innerText = evaluation;
-
-            document.getElementById('reportModal').classList.remove('hidden');
-        }
-
-        function copyReportToClipboard() {
-            const reportArea = document.getElementById('reportPrintArea');
-            const textContent = `
-【株式投資シミュレーション 授業振り返りシート】
-------------------------------------------------
-モード: ${document.getElementById('reportModeText').innerText}
-最終総資産: ${document.getElementById('reportFinalAsset').innerText}
-総収益率: ${document.getElementById('reportReturnRate').innerText}
-総取引回数: ${document.getElementById('reportTradeCount').innerText}
-
-■ 投資スタイル診断:
-${document.getElementById('reportStyleType').innerText}
-
-■ 総合評価:
-${document.getElementById('reportEvaluationText').innerText}
-
-■ 得られた気づきと今後の課題:
-${document.getElementById('reportUserNotes').value || '（未記述）'}
-------------------------------------------------
-            `.trim();
-
-            navigator.clipboard.writeText(textContent).then(() => {
-                alert('レポートテキストをクリップボードにコピーしました！ワークシート等に貼り付けて提出できます。');
-            });
-        }
-
-        // Particle Confetti Effect
-        function triggerConfetti() {
-            const canvas = document.getElementById('confettiCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            let particles = [];
-            for (let i = 0; i < 70; i++) {
-                particles.push({
-                    x: canvas.width / 2,
-                    y: canvas.height / 2,
-                    vx: (Math.random() - 0.5) * 12,
-                    vy: (Math.random() - 0.5) * 12 - 4,
-                    color: `hsl(${Math.random() * 360}, 90%, 60%)`,
-                    size: Math.random() * 6 + 4,
-                    life: 100
-                });
-            }
-
-            function animateConfetti() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let alive = false;
-                particles.forEach(p => {
-                    if (p.life > 0) {
-                        alive = true;
-                        p.x += p.vx;
-                        p.y += p.vy;
-                        p.vy += 0.2; // gravity
-                        p.life--;
-                        ctx.fillStyle = p.color;
-                        ctx.fillRect(p.x, p.y, p.size, p.size);
-                    }
-                });
-                if (alive) requestAnimationFrame(animateConfetti);
-            }
-            animateConfetti();
-        }
-    </script>
 </body>
 </html>
